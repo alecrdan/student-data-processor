@@ -15,7 +15,7 @@ def parse_data():
     and saves the cleaned data to a new CSV file.
 
     Returns:
-        pd.DataFrame: Processed DataFrame if successful, otherwise None.
+        DataFrame: Processed DataFrame if successful, otherwise None.
     """
     try:
         df = pd.read_csv(FILE_PATH)
@@ -72,7 +72,7 @@ def getSPS(df):
     Computes the Student Performance Score (SPS) and normalizes it to a 1-10 scale.
 
     Args:
-        df (pd.DataFrame): Processed student dataset.
+        df (DataFrame): Processed student dataset.
 
     Returns:
         list: Sorted list of normalized SPS scores.
