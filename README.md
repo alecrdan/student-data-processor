@@ -34,6 +34,7 @@ python main.py
 ├── data/
 │   ├── data.csv  # Raw dataset
 │   ├── comp_sci_student_data.csv  # Processed data
+|   ├── common_scale.py # Common scale dictionary
 ├── main.py  # Main script
 ├── data.py  # Contains category mappings
 └── README.md  # Project documentation
