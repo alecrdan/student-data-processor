@@ -5,7 +5,8 @@ from data import common_scale as dict
 
 # Define file paths
 FILE_PATH = "data/data.csv"  
-OUTPUT_FILE = "data/comp_sci_student_data.csv"
+OUTPUT_FILE = "data/parsed_student_data.csv"
+SPS_OUTPUT_FILE = "data/gaming_sps_data.csv"
 
 def parse_data():
     """
@@ -67,7 +68,7 @@ def get_gpa_value(gpa, gpa_dict):
     
     return float(round(interpolated_score, 2))
 
-def getSPS(df):
+def get_sps(df):
     """
     Computes the Student Performance Score (SPS) and normalizes it to a 1-10 scale.
 
@@ -81,12 +82,12 @@ def getSPS(df):
 
     for _, row in df.iterrows():
         # Retrieve mapped values from the dictionary
-        prep = dict["preparation"]["categories"].get(row["Preparation"], 0)
-        att = dict["attendance"]["categories"].get(row["Attendance"], 0)
+        prep = dict.data_dict["preparation"]["categories"].get(row["Preparation"], 0)
+        att = dict.data_dict["attendance"]["categories"].get(row["Attendance"], 0)
 
         # Compute precise GPA scores
-        o_gpa = get_gpa_value(float(row["Overall"]), dict["overall"]["categories"])
-        l_gpa = get_gpa_value(float(row["Last"]), dict["last"]["categories"])
+        o_gpa = get_gpa_value(float(row["Overall"]), dict.data_dict["overall"]["categories"])
+        l_gpa = get_gpa_value(float(row["Last"]), dict.data_dict["last"]["categories"])
 
         # Compute weighted SPS score
         norm_sps = ((prep * 7) + (att * 6) + (o_gpa * 9) + (l_gpa * 5)) / (7 + 6 + 9 + 5)
@@ -94,8 +95,22 @@ def getSPS(df):
 
     return sorted(scores)
 
+def construct_sps_dataframe(df):
+    sps_values = get_sps(df)
+
+    # Get Gaming column and translate SPS to dataframe
+    sps_df = pd.DataFrame({'SPS': sps_values})
+    gaming_df = df[['Gaming']].reset_index(drop=True)
+    # Combine dataframes
+    new_df = pd.concat([sps_df, gaming_df], axis=1) 
+
+     # Save to a CSV
+    new_df.to_csv(SPS_OUTPUT_FILE, index=False)
+    print(f"CSV file saved successfully as: {SPS_OUTPUT_FILE}")
+
+    return new_df
+
 # Execute the functions
 parsed_df = parse_data()
 if parsed_df is not None:
-    sps_scores = getSPS(parsed_df)
-    print(sps_scores)
+    construct_sps_dataframe(parsed_df)
