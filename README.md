@@ -61,5 +61,5 @@ CSV file saved successfully as: data/comp_sci_student_data.csv
 This project is licensed under the MIT License.
 
 ## Author
-[Alec Daniels](https://github.com/madebyalec)
+[Alec Daniels](https://github.com/alecrdan)
 
