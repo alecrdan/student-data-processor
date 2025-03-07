@@ -79,11 +79,14 @@ def get_sps(df):
         list: Sorted list of normalized SPS scores.
     """
     scores = []
-
     for _, row in df.iterrows():
-        # Retrieve mapped values from the dictionary
-        prep = dict.data_dict["preparation"]["categories"].get(row["Preparation"], 0)
-        att = dict.data_dict["attendance"]["categories"].get(row["Attendance"], 0)
+        att_key = str(row["Attendance"]).replace("%", "").strip()
+        prep_key = str(row["Preparation"]).replace("%", "").strip()
+
+        print(f"Row Preparation: '{prep_key}', Row Attendance: '{att_key}'")
+        
+        prep = dict.data_dict["preparation"]["categories"].get(prep_key, 0)
+        att = dict.data_dict["attendance"]["categories"].get(att_key, 0)
 
         # Compute precise GPA scores
         o_gpa = get_gpa_value(float(row["Overall"]), dict.data_dict["overall"]["categories"])
